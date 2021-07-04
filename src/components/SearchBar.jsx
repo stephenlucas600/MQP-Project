@@ -13,8 +13,11 @@ export default function SearchBar() {
         placeholder="Search blog posts"
         name="s"
       />
-      <button type="submit">Search</button>
-      <DropDown />
+
+      <view className="buttonStyle">
+        <DropDown />
+        <button type="submit">Search</button>
+      </view>
     </form>
   );
 }
