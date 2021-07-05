@@ -187,3 +187,7 @@ h2 {
 .buttonStyle{
   flexDirection: "row" 
 }
+
+.title h2 {
+  color: #2800FF;
+}

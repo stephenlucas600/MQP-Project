@@ -4,6 +4,7 @@ import { useWiggle } from "../hooks/wiggle";
 import { Link } from "wouter";
 
 import SearchBar from "../components/SearchBar";
+import ContactTable from "../components/table/ContactTable";
 
 
 // Our language strings for the header
