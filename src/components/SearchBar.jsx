@@ -4,6 +4,7 @@ import DropDown from "../components/DropDown";
 export default function SearchBar() {
   return (
     <form action="/" method="get">
+      <div className="left">
       <label htmlFor="header-search">
         <span className="visually-hidden">Search blog posts</span>
       </label>
@@ -13,11 +14,12 @@ export default function SearchBar() {
         placeholder="Search blog posts"
         name="s"
       />
+      </div>
 
-      <view className="buttonStyle">
+      <div className="buttonStyle left">
         <DropDown />
         <button type="submit">Search</button>
-      </view>
+      </div>
     </form>
   );
 }
