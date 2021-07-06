@@ -185,9 +185,22 @@ h2 {
 }
 
 .buttonStyle{
-  flexDirection: "row" 
+  float: left
+}
+
+.left{
+  float:left
+}
+
+.right{
+  float:right
 }
 
 .title h2 {
   color: #2800FF;
 }
+
+.dropdown-menu{
+  background-color: #ffff;
+}
+
