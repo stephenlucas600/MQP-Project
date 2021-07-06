@@ -183,3 +183,11 @@ h2 {
     white-space: nowrap;
     width: 1px;
 }
+
+.buttonStyle{
+  flexDirection: "row" 
+}
+
+.title h2 {
+  color: #2800FF;
+}
