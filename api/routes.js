@@ -1,10 +1,12 @@
 const express = require("express");
-var router = express.Router();
+// var router = express.Router();
 
 var oracledb = require("oracledb");
 const cors = require("cors");
 
 const mysql = require("mysql");
+
+// change address
 const db = mysql.createConnection({
   host: "localhost",
   user: "root",
@@ -18,30 +20,30 @@ app.use(cors());
 app.use(express.json());
 
 // change address
-var connAttrs = {
-  user: "agalphonsus",
-  password: "AGALPHONSUS",
-  connectString:
-    "(DESCRIPTION = (ADDRESS_LIST =" +
-    "(ADDRESS = (PROTOCOL = TCP)(Host = oracle.WPI.EDU)(Port = 1521)))(CONNECT_DATA =(SID = ORCL)))"
-};
+// var connAttrs = {
+//   user: "agalphonsus",
+//   password: "AGALPHONSUS",
+//   connectString:
+//     "(DESCRIPTION = (ADDRESS_LIST =" +
+//     "(ADDRESS = (PROTOCOL = TCP)(Host = oracle.WPI.EDU)(Port = 1521)))(CONNECT_DATA =(SID = ORCL)))"
+// };
 
 // Route to get all posts
-app.get("/api/get", (req, res) => {
-  db.query("SELECT * FROM posts", (err, result) => {
-    if (err) {
-      console.log(err);
-    }
-    res.send(result);
-  });
-});
+// app.get("/api/get", (req, res) => {
+//   db.query("SELECT * FROM posts", (err, result) => {
+//     if (err) {
+//       console.log(err);
+//     }
+//     res.send(result);
+//   });
+// });
 
-// Route to get one post Of organization
-app.get("/api/getOrganization/:organizationName", (req, res) => {
-  const organizationName = req.params.organizationName;
+// Route to get one post Of Program
+app.get("/api/getOrganization/:programName", (req, res) => {
+  const programName = req.params.programName;
   db.query(
     "SELECT * FROM Organizations JOIN Programs ON Programs.Organization_ID=Organizations.Organization_ID WHERE Organizations.Organization_NAME like %?%",
-    organizationName,
+    programName,
     (err, result) => {
       if (err) {
         console.log(err);
@@ -62,53 +64,53 @@ app.get("/api/getOrganization/:organizationName", (req, res) => {
 //   });
 // });
 
-router.get("/", function(req, res) {
-  oracledb.getConnection(connAttrs, function(err, connection) {
-    if (err) {
-      // Error connecting to DB
-      res.set("Content-Type", "application/json");
-      res.status(500).send(
-        JSON.stringify({
-          status: 500,
-          message: "Error connecting to DB",
-          detailed_message: err.message
-        })
-      );
-      return;
-    }
+// router.get("/", function(req, res) {
+//   oracledb.getConnection(connAttrs, function(err, connection) {
+//     if (err) {
+//       // Error connecting to DB
+//       res.set("Content-Type", "application/json");
+//       res.status(500).send(
+//         JSON.stringify({
+//           status: 500,
+//           message: "Error connecting to DB",
+//           detailed_message: err.message
+//         })
+//       );
+//       return;
+//     }
 
-    connection.execute(
-      "SELECT * FROM PATIENT",
-      {},
-      {
-        outFormat: oracledb.OBJECT // Return the result as Object
-      },
-      function(err, result) {
-        if (err) {
-          res.set("Content-Type", "application/json");
-          res.status(500).send(
-            JSON.stringify({
-              status: 500,
-              message: "Error getting the patient information",
-              detailed_message: err.message
-            })
-          );
-        } else {
-          res.contentType("application/json").status(200);
-          res.send(JSON.stringify(result.rows));
-        }
-        // Release the connection
-        connection.release(function(err) {
-          if (err) {
-            console.error(err.message);
-          } else {
-            console.log("GET /user_profiles : Connection released");
-          }
-        });
-      }
-    );
-  });
-});
+//     connection.execute(
+//       "SELECT * FROM PATIENT",
+//       {},
+//       {
+//         outFormat: oracledb.OBJECT // Return the result as Object
+//       },
+//       function(err, result) {
+//         if (err) {
+//           res.set("Content-Type", "application/json");
+//           res.status(500).send(
+//             JSON.stringify({
+//               status: 500,
+//               message: "Error getting the patient information",
+//               detailed_message: err.message
+//             })
+//           );
+//         } else {
+//           res.contentType("application/json").status(200);
+//           res.send(JSON.stringify(result.rows));
+//         }
+//         // Release the connection
+//         connection.release(function(err) {
+//           if (err) {
+//             console.error(err.message);
+//           } else {
+//             console.log("GET /user_profiles : Connection released");
+//           }
+//         });
+//       }
+//     );
+//   });
+// });
 
 // change to other values
 // add patient
@@ -160,5 +162,5 @@ router.get("/", function(req, res) {
 //     res.render('index', { title: 'Express' });
 // });
 
-module.exports = router;
+// module.exports = router;
 module.exports = db;

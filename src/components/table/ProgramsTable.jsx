@@ -27,7 +27,7 @@ function renderProgramTableData(dataTable) {
 export default function ProgramTable(dataTable) {
   return (
     <div>
-      <h1 id="title">Contact Table</h1>
+      <h1 id="title">Program Table</h1>
       <table id="contacts">
         <tbody>
           <tr>{renderTableHeader(dataTable)}</tr>
