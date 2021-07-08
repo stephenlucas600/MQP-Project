@@ -24,12 +24,12 @@ import Seo from "./components/seo.jsx";
 // Home function that is reflected across the site
 export default function Home() {
   return (
-    <Router hook={useHashLocation}>
+    <Router>
       <Seo />
       <main role="main" className="wrapper">
         <div className="content">
           {/* Router specifies which component to insert here as the main content */}
-          <PageRouter />
+          {/* <PageRouter /> */}
         </div>
       </main>
       {/* Footer links to Home and About, Link elements matched in router.jsx */}
