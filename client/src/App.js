@@ -1,12 +1,31 @@
+import React, {Component} from 'react';
 import logo from './logo.svg';
 import "./styles/styles.css";
 
 import SearchBar from "./components/SearchBar";
+import SearchTable from "./components/DBTable";
 
-function App() {
+class App extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      organizations:[],
+      search: window.location
+    };
 
-	const { search } = window.location;
-    const query = new URLSearchParams(search).get('s');
+    this.listAllOrganizations = this.listAllOrganizations.bind(this);
+
+  }
+
+
+  listAllOrganizations() {
+ 
+  }
+
+ render() {
+
+  const {organizations, search} = this.state;
+  const query = new URLSearchParams(search).get('s');
 
   return (
     <div className="App">
@@ -14,6 +33,7 @@ function App() {
       <div className="SearchBar">
        <SearchBar />
       </div>
+      <SearchTable />
       <div className="navigation"></div>
       <view className="instructions">
         <h2>Using this project</h2>
@@ -26,6 +46,7 @@ function App() {
       </view>
     </div>
   );
+}
 }
 
 export default App;
