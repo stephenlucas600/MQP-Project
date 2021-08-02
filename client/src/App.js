@@ -1,16 +1,19 @@
 import React, {Component} from 'react';
-import logo from './logo.svg';
+//import logo from './logo.svg';
 import "./styles/styles.css";
 
 import SearchBar from "./components/SearchBar";
 import SearchTable from "./components/DBTable";
+import OrganizationApi from"./api/Organizations";
 
 class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      metaHeader:[],
       organizations:[],
-      search: window.location
+      search: window.location,
+      loading: false
     };
 
     this.listAllOrganizations = this.listAllOrganizations.bind(this);
@@ -22,9 +25,26 @@ class App extends Component {
  
   }
 
+  // function a() {
+
+  // }
+
+  // a() =>  {
+
+  // }
+
+  componentDidMount(){
+    this.setState({loading: true});
+    OrganizationApi.listAllOrganizations((response) => {
+      // console.log("Response " + response);
+      this.setState({...this.state, loading:false, organizations:response });
+    });
+
+  }
+
  render() {
 
-  const {organizations, search} = this.state;
+  const {organizations, search, loading} = this.state;
   const query = new URLSearchParams(search).get('s');
 
   return (
@@ -33,9 +53,15 @@ class App extends Component {
       <div className="SearchBar">
        <SearchBar />
       </div>
-      <SearchTable />
+      <div className="SearchTable">
+      { loading ?
+        "Loading data...":
+        <SearchTable organizations={organizations}/>
+
+      }
+      </div>
       <div className="navigation"></div>
-      <view className="instructions">
+      <div className="instructions">
         <h2>Using this project</h2>
         <p>Test Post output {query}</p>
         <p>
@@ -43,7 +69,7 @@ class App extends Component {
           it to build your own app. See more info in the _ page, and check out README.md in the
           editor for additional detail plus next steps you can take!
         </p>
-      </view>
+      </div>
     </div>
   );
 }
