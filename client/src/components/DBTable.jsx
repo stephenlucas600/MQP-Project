@@ -1,94 +1,79 @@
 import * as React from "react";
 import { useState, useEffect } from "react";
-
-
-// Render row Headers in table
-//export default function renderTableHeader(dataTable) {
- // let header = Object.keys(dataTable[0]);
- // return header.map((key, index) => {
-  //  return <th key={index}>{key.toUpperCase()}</th>;
- // });
-//}
-
-// function renderData(dataTable) {
-//  let header = Object.keys(dataTable[0]);
-//  return dataTable.map((row, index) => {
-    // const { Servivice_Type_NAME, Description } = row; //destructuring
-//    const { header } = row;
- //   return (
- //     <tr key={Servivice_Type_NAME}>
- //       <td>{Description}</td>
- //     </tr>
- //   );
- // });
-//}
+import metaMaker from "../components/HeaderMeta"
 
 //Header Meta info
-//const meta = [];
-//const meta;
 const meta = [
   {
-    key: 'id',
+    key: 'Organization_ID',
     text: 'ID',
     sort: true,
   },
   {
-    key: 'name',
-    text: 'Automobile Company',
+    key: 'Organization_NAME',
+    text: 'Name',
     sort: true,
   },
   {
-    key: 'age',
-    text: 'Years Since Purchase',
+    key: 'Website_Link',
+    text: 'Website',
     sort: true,
   },
   {
-    key: 'color',
-    text: 'Color',
+    key: 'Description',
+    text: 'Description',
     sort: true,
   },
 ]
 
-const data = [
-  { name: 'Porsche', age: 2, color: 'Blue' },
-  { name: 'BMW', age: 1, color: 'Grey' },
-  { name: 'Renault', age: 2, color: 'Yellow' },
-  { name: 'Volkswagen', age: 7, color: 'Matte Red' },
-  { name: 'Porsche', age: 2, color: 'Silver Grey' },
-  { name: 'Jaguar', age: 6, color: 'Electric Blue' },
-  { name: 'Mistubishi', age: 4, color: 'Black' },
-  { name: 'Toyota', age: 9, color: 'Copper' },
-  { name: 'Honda', age: 12, color: 'Biege' },
-].map((d, id) => ({ ...d, id }));
+export default function Table({organizations}) {
 
-//table cell Data
-//const data;
-//const data = [].map((d, id) => ({ ...d, id }));
+ let newMeta;
+ 
+ 
+ if(organizations.length > 0) {
+  const meta_keys = Object.keys(organizations[0]);
+  console.log(meta_keys);
+  newMeta = metaMaker(meta_keys);
+  console.log(newMeta);
+  //setHeaderMeta(newMeta);
+ }
 
-export default function Table({ normalizeData }, meta) {
  const [headerMeta, setHeaderMeta] = useState(meta);
  const [tableData, setTableData] = useState([]);
+ 
+
+ //table cell Data
+ const data = organizations
+ console.log("organizations maped data " + JSON.stringify(data));
 
  useEffect(() => {
    // normalize data
-   setTableData(normalizeData(data), meta);
+   if(organizations.length > 0) {
+    setHeaderMeta(newMeta);
+   }
+
+   setTableData(normalizeData(data), headerMeta);
+
  }, []);
 
  return (
-   <div className="container">
+   <table className="container">
      <TableHeader headers={headerMeta} />
      <TableData data={tableData} meta={meta} />
-   </div>
+   </table>
  );
 }
 
 function TableHeader({ headers }) {
 
   return (
-    <thead className="table-row">
+    <thead className="table-row"> 
+    <tr>
       {
-        headers.map((d) => <TableCell data={d} />)
+        headers.map((d) => <TableHeaderCell data={d} />)
       }
+      </tr>
     </thead>
   )
 }
@@ -112,28 +97,27 @@ function TableData({ data, meta }) {
 
 
 function TableCell ({ data }) {
+console.log("data in table cell ============= " + data)
   return (
-    <td className="table-cell" onClick={data.sortFunc}>
-      {data.text}
+    <td className="table-cell">
+      {data.key === 'Website_Link' ? 
+      <a href={data.text} target="_blank">{data.text}</a>
+      :data.text}
     </td>
   )
 }
 
+function TableHeaderCell ({ data }) {
+  return (
+    <th className="table-header-cell">
+      {data.text}
+    </th>
+  )
+}
 
 function normalizeData(data) {
  return data.map(td => {
    const keys = Object.keys(td);
-   // Reminder change importent ID key in db_query.js to 'key'
    return keys.map(key => ({ key, text: td[key] }));
  });
 }
-
-/* export default function renderDataSimple(dataTable) {
-  let header = Object.keys(dataTable[0]);
-  return dataTable.map((row, index) => {
-    const { header } = row;
-    return index.map((col, index2) => {
-    	return <th key={index2}>{col}</th>;
-    });
-  });
-} */
