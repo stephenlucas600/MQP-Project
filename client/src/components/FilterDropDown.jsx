@@ -12,25 +12,23 @@ export default class FilterDropDown extends Component {
 
   constructor(props) {
     super(props);
-
     this.state = {
       filterType: '',
-      metaheaders: this.props.metaHeaders
+      metaheaders: this.props.metaHeaders,
     };
-
     this.onSelect = this.onSelect.bind(this);
-
   }
 
   onSelect(eventKey) {
     console.log(eventKey)
-    this.setState({filterType: eventKey })
+    this.setState({filterType: eventKey})
     this.props.filterDropdown(eventKey);
   }
 
 
   render() {
 
+  let {filterTitle} = this.props;
   let dropdownItems = [];
   this.props.metaHeaders.map((mh) => {
     dropdownItems.push(
@@ -42,7 +40,7 @@ export default class FilterDropDown extends Component {
   }); 
   return (
     <>
-      <DropdownButton onSelect={this.onSelect} id="dropdown-basic-button" title="Dropdown button" className="left">
+      <DropdownButton onSelect={this.onSelect} id="dropdown-basic-button" title={filterTitle} className="left">
         {dropdownItems}
       </DropdownButton>
     </>
