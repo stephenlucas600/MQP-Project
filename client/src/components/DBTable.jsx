@@ -1,6 +1,7 @@
 import * as React from "react";
 import { useState, useEffect } from "react";
 import metaMaker from "../components/HeaderMeta"
+import "../styles/styles.css";
 
 //Header Meta info
 const meta = [
@@ -33,9 +34,9 @@ export default function Table({organizations}) {
  
  if(organizations.length > 0) {
   const meta_keys = Object.keys(organizations[0]);
-  console.log(meta_keys);
+  console.log('tableDB: get meta_keys:' + meta_keys);
   newMeta = metaMaker(meta_keys);
-  console.log(newMeta);
+  console.log("TableDB: newMeta: " + JSON.stringify(newMeta));
   //setHeaderMeta(newMeta);
  }
 
@@ -45,7 +46,7 @@ export default function Table({organizations}) {
 
  //table cell Data
  const data = organizations
- console.log("organizations maped data " + JSON.stringify(data));
+ console.log("TableDB: organizations maped data " + JSON.stringify(data));
 
  useEffect(() => {
    // normalize data
@@ -55,12 +56,14 @@ export default function Table({organizations}) {
 
    setTableData(normalizeData(data), headerMeta);
 
- }, []);
+   console.log("TableDB Update");
+
+ }, [organizations]);
 
  return (
    <table className="container">
      <TableHeader headers={headerMeta} />
-     <TableData data={tableData} meta={meta} />
+     <TableData data={tableData} meta={headerMeta} />
    </table>
  );
 }
@@ -97,10 +100,10 @@ function TableData({ data, meta }) {
 
 
 function TableCell ({ data }) {
-console.log("data in table cell ============= " + data)
+console.log("data in table cell ============= " + data + " " + + JSON.stringify(data))
   return (
     <td className="table-cell">
-      {data.key === 'Website_Link' ? 
+      {(data.key === 'Website_Link' || data.key === 'Program_Website_Link') ? 
       <a href={data.text} target="_blank">{data.text}</a>
       :data.text}
     </td>

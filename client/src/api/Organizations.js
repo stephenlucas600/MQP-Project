@@ -1,14 +1,11 @@
 import httpService from '../services/HttpService';
 
-class OrganizationsApi {
+class OrganizationApi {
     
     static listAllOrganizations(callback) {
         let url = `/organizations`;
-
         return httpService.get(url, callback);
     }
-
-
 
     // static getAppointmentByPatient(patientId, callback) {
     //     let url = `/appointments/patients/${patientId}`;
@@ -42,4 +39,4 @@ class OrganizationsApi {
 
 }
 
-export default OrganizationsApi;
+export default OrganizationApi;

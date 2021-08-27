@@ -6,9 +6,10 @@ export default class SearchBar extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      filterType: '',
+      filterType: 'Filter',
       searchValue: '',
-      tableValue: '',
+      tableType: '',
+      tableTitle: 'Tables',
       headers: this.props.metaHeaders
     };
 
@@ -18,9 +19,8 @@ export default class SearchBar extends Component {
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.dropdownFilter = this.dropdownFilter.bind(this);
+    this.dropdownTable = this.dropdownTable.bind(this);
   }
-
-
 
 
   // 1. Change this SearchBar to a class (something like in App.js)
@@ -37,23 +37,35 @@ export default class SearchBar extends Component {
 
   handleSubmit(event) {
     event.preventDefault();
-    const {filterType, searchValue} = this.state;
-    this.props.filterOrganizations(filterType,searchValue);
+    const {filterType, searchValue, tableType} = this.state;
+    if(filterType !== 'Filter'){
+      this.props.filterOrganizations(filterType,searchValue);
+    }
   }
 
 
   dropdownFilter (filterValue) {
-    console.log("Here ", filterValue);
+    console.log("Filter Here ", filterValue);
     this.setState({...this.state, filterType: filterValue});
   }
 
   dropdownTable (tableValue) {
-    console.log("Here ", tableValue);
-    this.setState({...this.state, filterType: tableValue});
+    console.log("Table Here ", tableValue);
+    let currState = this.state;
+    currState.tableType = tableValue;
+    currState.tableTitle = tableValue;
+    currState.filterType = 'Filter';
+    this.setState(currState);
+    console.log("Every values in dropdown changed");
+    console.log(currState);
+    // this.setState({...this.state, tableType: tableValue, tableTitle: tableValue, filterTitle: 'Filter'});
+
+    this.props.changeTable(tableValue);
   }
 
   render() {
     //const query = new URLSearchParams(Search).get('action');
+    let {filterType, tableTitle }= this.state;
 
     return (
       <form onSubmit={this.handleSubmit} method="get">
@@ -72,8 +84,8 @@ export default class SearchBar extends Component {
         </div>
 
         <div className="buttonStyle left">
-          <FilterDropDown filterDropdown={this.dropdownFilter} metaHeaders={this.props.metaHeaders}/>
-          <TableDropDown tableDropdown={this.dropdownTable}/>
+          <FilterDropDown filterDropdown={this.dropdownFilter} filterTitle={filterType} metaHeaders={this.props.metaHeaders} />
+          <TableDropDown tableDropdown={this.dropdownTable}  tableTitle={tableTitle} />
           <button type="submit" value="Submit">Search</button>
         </div>
       </form>

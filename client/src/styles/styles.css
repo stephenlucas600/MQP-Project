@@ -8,7 +8,7 @@ to this section's matching END comment to see page-specific styles.
 ******************************************************************************/
 /* Our default values set as CSS variables */
 :root {
-  --color-bg: #FFFFA0;
+  --color-bg: #a0cfff;
   --color-text-main: #000000;
   --color-primary: #AFECE0;
   --wrapper-height: 85vh;
@@ -174,6 +174,7 @@ h1 {
 }
 .instructions p {
   font-size: 1rem;
+  background-color: #ffff;
 }
 h2 {
   color: #2800FF;
@@ -202,8 +203,35 @@ h2 {
   float:right
 }
 
+
 /* dropdown menu */
 .dropdown-menu{
   background-color: #ffff;
 }
 
+.table-header-cell {
+  background-color: #d4baff7d;
+}
+
+
+.table-cell {
+  border: 1px solid #f4f6f8;
+  padding: 4px;
+  text-align: left;
+}
+
+.container {
+  border-spacing: 0px;
+  background: #fff;
+  box-shadow: 0 1px 0 0 rgba(22, 29, 37, 0.05);
+  width: 100%;
+}
+
+.SearchTable {
+  clear: both;
+  display: block;
+  padding: 10px;
+  overflow-x: auto;
+  overflow-y: auto;
+  height: 500px;
+}
