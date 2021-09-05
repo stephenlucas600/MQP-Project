@@ -69,12 +69,11 @@ export default function Table({organizations}) {
 }
 
 function TableHeader({ headers }) {
-
   return (
     <thead className="table-row"> 
     <tr>
       {
-        headers.map((d) => <TableHeaderCell data={d} />)
+        headers.map((d) => <TableHeaderCell data={d} key={d.key}/>)
       }
       </tr>
     </thead>
@@ -100,7 +99,7 @@ function TableData({ data, meta }) {
 
 
 function TableCell ({ data }) {
-console.log("data in table cell ============= " + data + " " + + JSON.stringify(data))
+  console.log("data in table cell ============= " + data + " " + + JSON.stringify(data))
   return (
     <td className="table-cell">
       {(data.key === 'Website_Link' || data.key === 'Program_Website_Link') ? 

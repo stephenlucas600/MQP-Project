@@ -1,25 +1,25 @@
 import React, {Component} from 'react';
 import FilterDropDown from "../components/FilterDropDown";
 import TableDropDown from "../components/TableDropDown";
+import ServiceDropDown from "../components/ServiceDropDown";
 
 export default class SearchBar extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      filterType: 'Filter',
+      filterType: 'Select Column',
       searchValue: '',
       tableType: '',
-      tableTitle: 'Tables',
+      tableTitle: 'Select Table',
+      serviceType: 'Select Service',
       headers: this.props.metaHeaders
     };
-
-    //this.listAllOrganizations = this.listAllOrganizations.bind(this);
-    // this.filterOrganizations = this.filterOrganizations.bind(this);
 
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.dropdownFilter = this.dropdownFilter.bind(this);
     this.dropdownTable = this.dropdownTable.bind(this);
+    this.dropdownService = this.dropdownService.bind(this);
   }
 
 
@@ -37,9 +37,9 @@ export default class SearchBar extends Component {
 
   handleSubmit(event) {
     event.preventDefault();
-    const {filterType, searchValue, tableType} = this.state;
-    if(filterType !== 'Filter'){
-      this.props.filterOrganizations(filterType,searchValue);
+    const {filterType, searchValue, serviceType} = this.state;
+    if(filterType !== 'Select Column'){
+      this.props.filterTable(filterType,searchValue, serviceType);
     }
   }
 
@@ -49,12 +49,18 @@ export default class SearchBar extends Component {
     this.setState({...this.state, filterType: filterValue});
   }
 
+  dropdownService (serviceValue) {
+    console.log("Service Here ", serviceValue);
+    this.setState({...this.state, serviceType: serviceValue});
+  }
+
   dropdownTable (tableValue) {
     console.log("Table Here ", tableValue);
     let currState = this.state;
     currState.tableType = tableValue;
     currState.tableTitle = tableValue;
-    currState.filterType = 'Filter';
+    currState.filterType = 'Select Column';
+    currState.serviceType = 'Select Service';
     this.setState(currState);
     console.log("Every values in dropdown changed");
     console.log(currState);
@@ -65,7 +71,15 @@ export default class SearchBar extends Component {
 
   render() {
     //const query = new URLSearchParams(Search).get('action');
-    let {filterType, tableTitle }= this.state;
+    let {filterType, tableTitle, serviceType }= this.state;
+
+    let sdt 
+
+    if ( tableTitle === "programs_of_types" || tableTitle === "organizations_multiple_services"){
+      sdt = <ServiceDropDown serviceDropDown={this.dropdownService}  serviceType={serviceType} />
+    } else {
+      sdt = null;
+    }
 
     return (
       <form onSubmit={this.handleSubmit} method="get">
@@ -83,9 +97,10 @@ export default class SearchBar extends Component {
         />
         </div>
 
-        <div className="buttonStyle left">
-          <FilterDropDown filterDropdown={this.dropdownFilter} filterTitle={filterType} metaHeaders={this.props.metaHeaders} />
+        <div className="buttonStyle left">    
           <TableDropDown tableDropdown={this.dropdownTable}  tableTitle={tableTitle} />
+          {sdt}
+          <FilterDropDown filterDropdown={this.dropdownFilter} filterTitle={filterType} metaHeaders={this.props.metaHeaders} />
           <button type="submit" value="Submit">Search</button>
         </div>
       </form>
