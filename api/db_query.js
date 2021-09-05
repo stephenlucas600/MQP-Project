@@ -1,5 +1,5 @@
 
- module.exports.takeQuery = function takeQuery (path, params={}){
+ module.exports.takeQuery = function takeQuery (path){
 	switch(path){
 
 		case '/organizations':
@@ -8,7 +8,7 @@
 
 		// Q3: All programs that belong to this Organization? 
 		case '/organization_programs':
-			return 'SELECT Programs.program_Name AS `Program`, Organizations.Organization_NAME, Organizations.Website_Link, Programs.Program_Website_Link, Programs.Description, Programs.Provider  FROM Organizations JOIN Programs ON Programs.Organization_ID=Organizations.Organization_ID;';
+			return 'SELECT Programs.program_Name AS `Program`, Organizations.Organization_NAME, Organizations.Website_Link, Programs.Program_Website_Link, Programs.Description, Programs.Provider, City_NAME AS `City`, Regions.Region_NAME as `Regions`  FROM Organizations JOIN Programs ON Programs.Organization_ID=Organizations.Organization_ID LEFT JOIN Regions_has_Programs ON Regions_has_Programs.Program_ID=Programs.Program_ID LEFT JOIN Regions on Regions.Region_ID=Regions_has_Programs.Region_ID LEFT JOIN Regions_Cities ON Regions_Cities.Region_ID=Regions.Region_ID;';
 			break;
 
 		// Q4: What other programs does this contact info relate to? 
@@ -18,7 +18,7 @@
 
 		// Q5: Find programs(description, contact, organization name) under a specific services type.  
 		case '/programs_of_types':
-			return  'SELECT Services_Type.Service_Type_NAME as `Service`, Services_Type.Description as `Service Descr`, Programs.program_Name AS `Program`, Programs.Program_Website_Link, Programs.Description, Programs.Provider, Organizations.Organization_NAME, Organizations.Website_Link, Contacts.Title, Contacts.Address, Contacts.Email, Contacts.Phone_Number FROM Services_Type_has_Programs JOIN Services_Type ON Services_Type.Service_Type_ID=Services_Type_has_Programs.Service_Type_ID JOIN Programs ON Services_Type_has_Programs.Program_ID=Programs.Program_ID JOIN Organizations ON Organizations.Organization_ID=Programs.Organization_ID JOIN Programs_Contacts ON Programs.Program_ID=Programs_Contacts.Program_ID JOIN Contacts ON Contacts.Contact_ID=Programs_Contacts.Contact_ID;';
+			return  'SELECT Services_Type.Service_Type_NAME as `Service`, Services_Type.Description as `Service Descr`, Programs.program_Name AS `Program`, Programs.Program_Website_Link, Programs.Description, Programs.Provider, Organizations.Organization_NAME, Organizations.Website_Link, City_NAME AS `City`, Regions.Region_NAME as `Regions`, Contacts.Title, Contacts.Address, Contacts.Email, Contacts.Phone_Number FROM Services_Type_has_Programs JOIN Services_Type ON Services_Type.Service_Type_ID=Services_Type_has_Programs.Service_Type_ID JOIN Programs ON Services_Type_has_Programs.Program_ID=Programs.Program_ID JOIN Organizations ON Organizations.Organization_ID=Programs.Organization_ID JOIN Programs_Contacts ON Programs.Program_ID=Programs_Contacts.Program_ID JOIN Contacts ON Contacts.Contact_ID=Programs_Contacts.Contact_ID LEFT JOIN Regions_has_Programs ON Regions_has_Programs.Program_ID=Programs.Program_ID LEFT JOIN Regions on Regions.Region_ID=Regions_has_Programs.Region_ID LEFT JOIN Regions_Cities ON Regions_Cities.Region_ID=Regions.Region_ID;';
 			break;
 
 		// Q12: Which service type is offered by more then two organizations.
@@ -26,10 +26,13 @@
 			return 'select COUNT(*) As NUM_OF_ORG_Services, ORG_TYPS.Service_Type_NAME FROM ( select DISTINCT Organizations.Organization_NAME, Services_Type.Service_Type_NAME FROM Organizations JOIN Programs ON Organizations.Organization_ID=Programs.Organization_ID JOIN Services_Type_has_Programs ON Services_Type_has_Programs.Program_ID=Programs.Program_ID JOIN Services_Type ON Services_Type.Service_Type_ID=Services_Type_has_Programs.Service_Type_ID ) ORG_TYPS group by ORG_TYPS.Service_Type_NAME HAVING Count(*) > 2;';
   			break;
 
+  		case '/program_events':
+  			return'SELECT Events.Event_Name as `Event`, Event_Dates.Start_Date, Event_Dates.End_Date, Organizations.Organization_NAME as `Organization`, Programs.program_Name as `Program`, Regions_Cities.City_NAME as `City`, Regions.Region_NAME as `Region` FROM Events JOIN Event_Dates on Events.Event_ID=Event_Dates.Event_ID JOIN Programs ON Events.Program_ID=Programs.Program_ID JOIN Organizations ON Programs.Organization_ID=Organizations.Organization_ID LEFT JOIN Regions_has_Programs ON Regions_has_Programs.Program_ID=Programs.Program_ID LEFT JOIN Regions on Regions.Region_ID=Regions_has_Programs.Region_ID LEFT JOIN Regions_Cities ON Regions_Cities.Region_ID=Regions.Region_ID;';
+  			break;
 		// Q13: Which Organization offers no programs related to Service Type. (requires params inpute)
-		case '/organization_lack_service_type':
-			return 'SELECT SELECT Organizations.Organization_NAME AS `NAME`, Organizations.Website_Link, Organizations.Description FROM Organizations WHERE Organizations.Organization_ID not in ( SELECT distinct Organizations.Organization_ID FROM Organizations JOIN Programs ON Organizations.Organization_ID=Programs.Organization_ID JOIN Services_Type_has_Programs ON Services_Type_has_Programs.Program_ID=Programs.Program_ID JOIN Services_Type ON Services_Type.Service_Type_ID=Services_Type_has_Programs.Service_Type_ID WHERE Services_Type.Service_Type_NAME);';
-			break;
+		// case '/organization_lack_service_type':
+		// 	return 'SELECT SELECT Organizations.Organization_NAME AS `NAME`, Organizations.Website_Link, Organizations.Description FROM Organizations WHERE Organizations.Organization_ID not in ( SELECT distinct Organizations.Organization_ID FROM Organizations JOIN Programs ON Organizations.Organization_ID=Programs.Organization_ID JOIN Services_Type_has_Programs ON Services_Type_has_Programs.Program_ID=Programs.Program_ID JOIN Services_Type ON Services_Type.Service_Type_ID=Services_Type_has_Programs.Service_Type_ID WHERE Services_Type.Service_Type_NAME);';
+		// 	break;
 	};
 };
 
