@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import metaMaker from "../components/HeaderMeta"
 import "../styles/styles.css";
 
-//Header Meta info
+//Header Meta info defult to prevent crash while loading
 const meta = [
   {
     key: 'Organization_ID',
@@ -68,6 +68,13 @@ export default function Table({organizations}) {
  );
 }
 
+function normalizeData(data) {
+ return data.map(td => {
+   const keys = Object.keys(td);
+   return keys.map(key => ({ key, text: td[key] }));
+ });
+}
+
 function TableHeader({ headers }) {
   return (
     <thead className="table-row"> 
@@ -77,6 +84,14 @@ function TableHeader({ headers }) {
       }
       </tr>
     </thead>
+  )
+}
+
+function TableHeaderCell ({ data }) {
+  return (
+    <th className="table-header-cell">
+      {data.text}
+    </th>
   )
 }
 
@@ -99,27 +114,26 @@ function TableData({ data, meta }) {
 
 
 function TableCell ({ data }) {
-  console.log("data in table cell ============= " + data + " " + + JSON.stringify(data))
+  //console.log("data in table cell ============= " + JSON.stringify(data))
   return (
     <td className="table-cell">
-      {(data.key === 'Website_Link' || data.key === 'Program_Website_Link') ? 
-      <a href={data.text} target="_blank">{data.text}</a>
-      :data.text}
+      {specalTableCell({data})}
     </td>
   )
 }
 
-function TableHeaderCell ({ data }) {
-  return (
-    <th className="table-header-cell">
-      {data.text}
-    </th>
-  )
-}
-
-function normalizeData(data) {
- return data.map(td => {
-   const keys = Object.keys(td);
-   return keys.map(key => ({ key, text: td[key] }));
- });
+function specalTableCell ({ data }) {
+  if (data.key === 'Website_Link' || data.key === 'Program_Website_Link') {
+    return(
+    <>
+      <a href={data.text} target="_blank" rel="noreferrer">{data.text}</a>
+    </>
+    )
+  }
+  else if (data.key === 'Start_Date' || data.key === 'End_Date') {
+    return( new Date(data.text).toLocaleString())
+  }
+  else {
+    return (data.text)
+  }  
 }

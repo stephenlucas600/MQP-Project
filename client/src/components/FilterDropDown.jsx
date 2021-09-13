@@ -31,12 +31,14 @@ export default class FilterDropDown extends Component {
   let {filterTitle} = this.props;
   let dropdownItems = [];
   this.props.metaHeaders.map((mh) => {
-    dropdownItems.push(
+    if (mh.key.indexOf('Service') < 0) {
+      dropdownItems.push(
         <>
           <Dropdown.Item key={mh.key} eventKey={mh.key}>{mh.text}</Dropdown.Item>
           <Dropdown.Divider />
           </>
-         );
+      );
+    }
   }); 
   return (
     <>

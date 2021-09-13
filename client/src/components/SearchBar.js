@@ -12,6 +12,7 @@ export default class SearchBar extends Component {
       tableType: '',
       tableTitle: 'Select Table',
       serviceType: 'Select Service',
+      excludeFilter: false,
       headers: this.props.metaHeaders
     };
 
@@ -30,16 +31,24 @@ export default class SearchBar extends Component {
 
 
   handleChange(event) {
-    this.setState({...this.state, searchValue: event.target.value});
-     console.log("Here searchValue ", event.target.value);
-
+    if (event.target.type === 'checkbox' ) {
+      this.setState({...this.state, excludeFilter: event.target.checked});
+      console.log("Here excludeFilter: ", event.target.checked);
+    }
+    else {
+      this.setState({...this.state, searchValue: event.target.value});
+      console.log("Here searchValue: ", event.target.value);
+    }
+    
   }
+
+  handleInputChange
 
   handleSubmit(event) {
     event.preventDefault();
-    const {filterType, searchValue, serviceType} = this.state;
+    const {filterType, searchValue, serviceType, excludeFilter} = this.state;
     if(filterType !== 'Select Column'){
-      this.props.filterTable(filterType,searchValue, serviceType);
+      this.props.filterTable(filterType,searchValue, serviceType, excludeFilter);
     }
   }
 
@@ -101,6 +110,14 @@ export default class SearchBar extends Component {
           <TableDropDown tableDropdown={this.dropdownTable}  tableTitle={tableTitle} />
           {sdt}
           <FilterDropDown filterDropdown={this.dropdownFilter} filterTitle={filterType} metaHeaders={this.props.metaHeaders} />
+          <label>
+            Exclude:
+            <input
+              name="excludeFilter"
+              type="checkbox"
+              checked={this.state.excludeFilter}
+              onChange={this.handleChange} />
+          </label>
           <button type="submit" value="Submit">Search</button>
         </div>
       </form>
