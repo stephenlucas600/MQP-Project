@@ -9,5 +9,5 @@ To run program, Open two computer terminals.
 `cd api` in the fist terminal and run # `node index.js` to turn on program's backend.
 
 
-`cd cliant` in the sencond terminal and run # `npm start` to to run the program.
+`cd client` in the sencond terminal and run # `npm start` to to run the program.
 
