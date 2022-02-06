@@ -6,28 +6,8 @@ This project sets about creating a prototype centralized database and web interf
 
 To run program, Open two computer terminals.
 
-In the 
+`cd api` in the fist terminal and run # `node index.js` to turn on program's backend.
 
 
-### `npm start`
+`cd cliant` in the sencond terminal and run # `npm start` to to run the program.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
-
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
-
-### `npm test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
