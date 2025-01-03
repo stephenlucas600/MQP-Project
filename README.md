@@ -19,3 +19,7 @@ To run program, Open two computer terminals.
 
 `cd client` in the sencond terminal and run # `npm start` to to run the program.
 
+## Project Documentation
+This project was done as a Major Qualification Project at Worcester Polytechnic Institute.<br/> 
+Additional Project Documentation about the making of the project can be found here at: [digital.wpi.edu](https://digital.wpi.edu/concern/student_works/w95053439?locale=pt-BR)
+
